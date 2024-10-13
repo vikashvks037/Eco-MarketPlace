@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Wait for 3 seconds and then go to LoginActivity
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, OnBoadingActivity.class);
             startActivity(intent);
-            finish(); // Close MainActivity
+            finish();
         }, 3000); // 3000 milliseconds = 3 seconds
     }
 }

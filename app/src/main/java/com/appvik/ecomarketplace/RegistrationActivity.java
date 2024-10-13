@@ -47,7 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("firstTime", false);
             editor.apply(); // Use apply for asynchronous saving
-            startActivity(new Intent(RegistrationActivity.this, OnBoadingActivity.class));
+            startActivity(new Intent(RegistrationActivity.this,LoginActivity.class));
             finish();
         }
     }

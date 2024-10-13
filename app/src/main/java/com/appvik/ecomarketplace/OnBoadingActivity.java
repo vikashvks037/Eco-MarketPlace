@@ -14,11 +14,11 @@ import androidx.viewpager.widget.ViewPager;
 
 public class OnBoadingActivity extends AppCompatActivity {
 
-    ViewPager viewPager;
-    LinearLayout dotsLayout;
-    Button btn, nextBtn, backBtn;
-    SliderAdapter sliderAdapter;
-    TextView[] dots;
+    private ViewPager viewPager;
+    private LinearLayout dotsLayout;
+    private Button btn, nextBtn; // Removed backBtn
+    private SliderAdapter sliderAdapter;
+    private TextView[] dots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +30,16 @@ public class OnBoadingActivity extends AppCompatActivity {
         dotsLayout = findViewById(R.id.dots);
         btn = findViewById(R.id.get_started_btn);
         nextBtn = findViewById(R.id.next_btn);
-        backBtn = findViewById(R.id.back_btn);
-        addDots(0);
 
         sliderAdapter = new SliderAdapter(this);
         viewPager.setAdapter(sliderAdapter);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(OnBoadingActivity.this,RegistrationActivity.class));
-                finish();
-            }
-        });
 
+        addDots(0);
+
+        btn.setOnClickListener(view -> {
+            startActivity(new Intent(OnBoadingActivity.this, LoginActivity.class));
+            finish();
+        });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -52,7 +49,7 @@ public class OnBoadingActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 addDots(position);
                 btn.setVisibility(position == sliderAdapter.getCount() - 1 ? View.VISIBLE : View.INVISIBLE);
-                backBtn.setVisibility(position == 0 ? View.INVISIBLE : View.VISIBLE); // Hide back button on first page
+                // Removed backBtn visibility control since back button no longer exists
                 nextBtn.setVisibility(position == sliderAdapter.getCount() - 1 ? View.INVISIBLE : View.VISIBLE); // Hide next button on last page
             }
 
@@ -67,14 +64,6 @@ public class OnBoadingActivity extends AppCompatActivity {
                 viewPager.setCurrentItem(currentItem + 1); // Move to the next page
             }
         });
-
-        // Set click listener for the back button
-        backBtn.setOnClickListener(v -> {
-            int currentItem = viewPager.getCurrentItem();
-            if (currentItem > 0) {
-                viewPager.setCurrentItem(currentItem - 1); // Move to the previous page
-            }
-        });
     }
 
     private void addDots(int position) {
@@ -84,20 +73,21 @@ public class OnBoadingActivity extends AppCompatActivity {
 
         for (int i = 0; i < count; i++) {
             dots[i] = new TextView(this);
-            dots[i].setText(Html.fromHtml("&#8226;"));
-            dots[i].setTextSize(40); // Set the desired size for dots
-            dots[i].setPadding(8, 0, 8, 0); // Optional: add padding for spacing
+            dots[i].setText(Html.fromHtml("&#8226;")); // Bullet point
+            dots[i].setTextSize(40);
+            dots[i].setPadding(8, 0, 8, 0);
             dotsLayout.addView(dots[i]);
 
-            // Set a click listener for each dot
-            final int index = i; // Final variable for inner class
-            dots[i].setOnClickListener(v -> {
-                viewPager.setCurrentItem(index); // Change page on dot click
-            });
+            // Set click listener on each dot
+            final int index = i; // Store index for the click listener
+            dots[i].setOnClickListener(v -> viewPager.setCurrentItem(index)); // Move to the clicked page
         }
 
+        // Highlight the active dot
         if (dots.length > 0) {
-            dots[position].setTextColor(getResources().getColor(R.color.blue));
+            for (int i = 0; i < dots.length; i++) {
+                dots[i].setTextColor(i == position ? getResources().getColor(R.color.black) : getResources().getColor(R.color.teal_200));
+            }
         }
     }
 }

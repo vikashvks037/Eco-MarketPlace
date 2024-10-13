@@ -29,7 +29,7 @@ public class SliderAdapter extends PagerAdapter {
     int headingArray[]={
             R.string.first_slide,
             R.string.second_slide,
-             R.string.third_slide
+            R.string.third_slide
     };
 
     int descriptionArray[]={
